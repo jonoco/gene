@@ -31,6 +31,13 @@ export type Revenue = {
   revenue: number;
 };
 
+export type LatestPerson = {
+  id: string;
+  name: string;
+  surname: string;
+  birth_date: string;
+}
+
 export type LatestInvoice = {
   id: string;
   name: string;
@@ -53,6 +60,13 @@ export type InvoicesTable = {
   date: string;
   amount: number;
   status: 'pending' | 'paid';
+};
+
+export type PeopleTableType = {
+  id: string;
+  name: string;
+  surname: string;
+  birth_date: string;
 };
 
 export type CustomersTableType = {

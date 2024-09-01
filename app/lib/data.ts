@@ -1,30 +1,39 @@
-import { sql } from '@vercel/postgres';
+import { sql } from "@vercel/postgres";
 import {
   CustomerField,
   CustomersTableType,
   InvoiceForm,
   InvoicesTable,
   LatestInvoiceRaw,
-  Revenue,
-} from './definitions';
-import { formatCurrency } from './utils';
+  PeopleTableType,
+} from "./definitions";
+import { formatCurrency } from "./utils";
 
-export async function fetchRevenue() {
+export async function countPeople() {
   try {
-    // Artificially delay a response for demo purposes.
-    // Don't do this in production :)
+    const data = await sql`SELECT COUNT(*) FROM people`;
 
-    // console.log('Fetching revenue data...');
-    // await new Promise((resolve) => setTimeout(resolve, 3000));
-
-    const data = await sql<Revenue>`SELECT * FROM revenue`;
-
-    // console.log('Data fetch completed after 3 seconds.');
-
-    return data.rows;
+    return Number(data.rows[0].count);
   } catch (error) {
-    console.error('Database Error:', error);
-    throw new Error('Failed to fetch revenue data.');
+    console.error("Database Error:", error);
+    throw new Error("Failed to count people.");
+  }
+}
+
+export async function fetchLatestPeople() {
+  try {
+    const data =
+      await sql`SELECT * FROM people ORDER BY created_at DESC LIMIT 5`;
+
+    return data.rows.map((person) => ({
+      id: person.id,
+      name: person.name,
+      surname: person.surname,
+      birth_date: person.birth_date,
+    }));
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch the latest people.");
   }
 }
 
@@ -43,8 +52,8 @@ export async function fetchLatestInvoices() {
     }));
     return latestInvoices;
   } catch (error) {
-    console.error('Database Error:', error);
-    throw new Error('Failed to fetch the latest invoices.');
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch the latest invoices.");
   }
 }
 
@@ -66,10 +75,10 @@ export async function fetchCardData() {
       invoiceStatusPromise,
     ]);
 
-    const numberOfInvoices = Number(data[0].rows[0].count ?? '0');
-    const numberOfCustomers = Number(data[1].rows[0].count ?? '0');
-    const totalPaidInvoices = formatCurrency(data[2].rows[0].paid ?? '0');
-    const totalPendingInvoices = formatCurrency(data[2].rows[0].pending ?? '0');
+    const numberOfInvoices = Number(data[0].rows[0].count ?? "0");
+    const numberOfCustomers = Number(data[1].rows[0].count ?? "0");
+    const totalPaidInvoices = formatCurrency(data[2].rows[0].paid ?? "0");
+    const totalPendingInvoices = formatCurrency(data[2].rows[0].pending ?? "0");
 
     return {
       numberOfCustomers,
@@ -78,15 +87,15 @@ export async function fetchCardData() {
       totalPendingInvoices,
     };
   } catch (error) {
-    console.error('Database Error:', error);
-    throw new Error('Failed to fetch card data.');
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch card data.");
   }
 }
 
 const ITEMS_PER_PAGE = 6;
 export async function fetchFilteredInvoices(
   query: string,
-  currentPage: number,
+  currentPage: number
 ) {
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
 
@@ -114,8 +123,8 @@ export async function fetchFilteredInvoices(
 
     return invoices.rows;
   } catch (error) {
-    console.error('Database Error:', error);
-    throw new Error('Failed to fetch invoices.');
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch invoices.");
   }
 }
 
@@ -135,8 +144,8 @@ export async function fetchInvoicesPages(query: string) {
     const totalPages = Math.ceil(Number(count.rows[0].count) / ITEMS_PER_PAGE);
     return totalPages;
   } catch (error) {
-    console.error('Database Error:', error);
-    throw new Error('Failed to fetch total number of invoices.');
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch total number of invoices.");
   }
 }
 
@@ -160,8 +169,8 @@ export async function fetchInvoiceById(id: string) {
 
     return invoice[0];
   } catch (error) {
-    console.error('Database Error:', error);
-    throw new Error('Failed to fetch invoice.');
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch invoice.");
   }
 }
 
@@ -178,8 +187,8 @@ export async function fetchCustomers() {
     const customers = data.rows;
     return customers;
   } catch (err) {
-    console.error('Database Error:', err);
-    throw new Error('Failed to fetch all customers.');
+    console.error("Database Error:", err);
+    throw new Error("Failed to fetch all customers.");
   }
 }
 
@@ -211,7 +220,57 @@ export async function fetchFilteredCustomers(query: string) {
 
     return customers;
   } catch (err) {
-    console.error('Database Error:', err);
-    throw new Error('Failed to fetch customer table.');
+    console.error("Database Error:", err);
+    throw new Error("Failed to fetch customer table.");
+  }
+}
+
+const PEOPLE_PER_PAGE = 10;
+export async function fetchFilteredPeople(query: string, currentPage: number) {
+  const offset = (currentPage - 1) * PEOPLE_PER_PAGE;
+
+  try {
+    const data = await sql<PeopleTableType>`
+		SELECT
+      people.id,
+      people.name,
+      people.surname,
+      people.birth_date
+		FROM people
+		WHERE
+      people.name ILIKE ${`%${query}%`} OR
+      people.surname ILIKE ${`%${query}%`}
+		ORDER BY people.created_at ASC
+    LIMIT ${PEOPLE_PER_PAGE} OFFSET ${offset}
+    `;
+
+    console.log(data.rows);
+
+    const people = data.rows.map((person) => ({
+      ...person,
+      // birth_date: formatDate(person.birth_date),
+    }));
+
+    return people;
+  } catch (err) {
+    console.error("Database Error:", err);
+    throw new Error("Failed to fetch people table.");
+  }
+}
+
+export async function fetchPeoplePages(query: string) {
+  try {
+    const count = await sql`SELECT COUNT(*)
+    FROM people
+    WHERE
+      people.name ILIKE ${`%${query}%`} OR
+      people.surname ILIKE ${`%${query}%`}
+  `;
+
+    const totalPages = Math.ceil(Number(count.rows[0].count) / PEOPLE_PER_PAGE);
+    return totalPages;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch total number of people.");
   }
 }
