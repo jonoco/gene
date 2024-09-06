@@ -100,3 +100,32 @@ export type InvoiceForm = {
   amount: number;
   status: 'pending' | 'paid';
 };
+
+export type Person = {
+  id: string;
+  record: number;
+  father?: number;
+  mother?: number;
+  sibling?: number;
+  spouse?: number;
+  child?: number;
+  gender?: string;
+  surname?: string;
+  name?: string;
+  maiden_naame?: string;
+  birth_date?: string;
+  marriage_date?: string;
+  death_date?: string;
+  photo?: number;
+  photo_url?: string;
+  born_in?: string;
+  married_in?: string;
+  died_in?: string;
+  ssn?: string;
+  comments?: string;
+  entry_date?: string;
+  ancestry?: string;
+  father_id?: string;
+  mother_id?: string;
+  spouse_id?: string;
+};

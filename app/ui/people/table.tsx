@@ -1,8 +1,8 @@
 import Image from "next/image";
-import { UpdateInvoice, DeleteInvoice } from "@/app/ui/invoices/buttons";
-import InvoiceStatus from "@/app/ui/invoices/status";
-import { formatDateToLocal, formatCurrency } from "@/app/lib/utils";
-import { fetchFilteredInvoices, fetchFilteredPeople } from "@/app/lib/data";
+import { UpdatePerson, DeletePerson } from "@/app/ui/people/buttons";
+import { formatDateToLocal } from "@/app/lib/utils";
+import { fetchFilteredPeople } from "@/app/lib/data";
+import { auth } from "@/auth";
 
 export default async function InvoicesTable({
   query,
@@ -12,6 +12,7 @@ export default async function InvoicesTable({
   currentPage: number;
 }) {
   const people = await fetchFilteredPeople(query, currentPage);
+  const session = await auth();
 
   function mobileTable() {
     return (
@@ -77,8 +78,8 @@ export default async function InvoicesTable({
 
               <td className="whitespace-nowrap py-3 pl-6 pr-3">
                 <div className="flex justify-end gap-3">
-                  {/* <UpdateInvoice id={person.id} />
-                      <DeleteInvoice id={person.id} /> */}
+                  {!!session?.user && <UpdatePerson id={person.id} />}
+                  {/* <DeletePerson id={person.id} /> */}
                 </div>
               </td>
             </tr>

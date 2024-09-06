@@ -6,6 +6,7 @@ import {
   InvoicesTable,
   LatestInvoiceRaw,
   PeopleTableType,
+  Person,
 } from "./definitions";
 import { formatCurrency } from "./utils";
 
@@ -174,6 +175,30 @@ export async function fetchInvoiceById(id: string) {
   }
 }
 
+export async function fetchPersonById(id: string) {
+  try {
+    const data = await sql<Person>`
+      SELECT
+        id,
+        name,
+        surname,
+        birth_date,
+        ancestry
+      FROM people
+      WHERE id = ${id};
+    `;
+
+    const person = data.rows.map((person) => ({
+      ...person,
+    }));
+
+    return person[0];
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch person.");
+  }
+}
+
 export async function fetchCustomers() {
   try {
     const data = await sql<CustomerField>`
@@ -240,11 +265,9 @@ export async function fetchFilteredPeople(query: string, currentPage: number) {
 		WHERE
       people.name ILIKE ${`%${query}%`} OR
       people.surname ILIKE ${`%${query}%`}
-		ORDER BY people.created_at ASC
+		ORDER BY people.created_at DESC
     LIMIT ${PEOPLE_PER_PAGE} OFFSET ${offset}
     `;
-
-    console.log(data.rows);
 
     const people = data.rows.map((person) => ({
       ...person,

@@ -1,5 +1,11 @@
 import { inter } from '@/app/ui/fonts';
 import '@/app/ui/global.css';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Cox & Stuth Genealogy',
+  description: 'Genealogy research for the Cox and Stuth families.',
+};
 
 export default function RootLayout({
   children,
