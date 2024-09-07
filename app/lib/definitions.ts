@@ -64,19 +64,27 @@ export type InvoicesTable = {
 
 export type PeopleTableType = {
   id: string;
-  name: string;
-  surname: string;
-  birth_date: string;
+  name?: string;
+  surname?: string;
+  gender?: string;
+  maiden_naame?: string;
+  birth_date?: Date;
+  marriage_date?: Date;
+  death_date?: Date;
+  born_in?: string;
+  married_in?: string;
+  died_in?: string;
+  comments?: string;
+  ancestry?: string;
+  father_id?: string;
+  mother_id?: string;
+  spouse_id?: string;
+  father_name?: string;
 };
 
-export type CustomersTableType = {
-  id: string;
-  name: string;
-  email: string;
-  image_url: string;
-  total_invoices: number;
-  total_pending: number;
-  total_paid: number;
+export type SiblingType = {
+  sibling_id: string;
+  sibling_name: string;
 };
 
 export type FormattedCustomersTable = {

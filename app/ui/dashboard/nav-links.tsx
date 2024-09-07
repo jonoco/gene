@@ -1,37 +1,30 @@
 "use client";
 
-import {
-  UserGroupIcon,
-  HomeIcon,
-} from "@heroicons/react/24/outline";
-import Link from "next/link";
+import { NavLink } from "@mantine/core";
+import { IconFriends, IconHome } from "@tabler/icons-react";
 import { usePathname } from "next/navigation";
 
-// Map of links to display in the side navigation.
-// Depending on the size of the application, this would be stored in a database.
 const links = [
-  { name: "Home", href: "/dashboard", icon: HomeIcon },
-  { name: "People", href: "/dashboard/people", icon: UserGroupIcon },
+  { name: "Home", href: "/dashboard", icon: IconHome },
+  { name: "People", href: "/dashboard/people", icon: IconFriends },
 ];
 
 export default function NavLinks() {
   const pathname = usePathname();
-  
+
   return (
     <>
       {links.map((link) => {
         const LinkIcon = link.icon;
-        const active = link.href === pathname;
-        const className = active ? "bg-sky-50 text-blue-600" : "text-gray-700";
+
         return (
-          <Link
+          <NavLink
             key={link.name}
             href={link.href}
-            className={`${className} flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3`}
-          >
-            <LinkIcon className="w-6" />
-            <p className="hidden md:block">{link.name}</p>
-          </Link>
+            label={link.name}
+            active={link.href === pathname}
+            leftSection={<LinkIcon size="1rem" stroke={1.5} />}
+          />
         );
       })}
     </>

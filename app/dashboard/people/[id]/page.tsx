@@ -1,11 +1,12 @@
+import PersonProfile from "@/app/dashboard/people/[id]/components/PersonProfile/PersonProfile";
+import { fetchPersonById, fetchSiblings } from "@/app/lib/data";
 import Breadcrumbs from "@/app/ui/components/breadcrumbs";
-import EditPersonForm from "@/app/ui/people/edit-form";
-import { fetchPersonById } from "@/app/lib/data";
 import { notFound } from "next/navigation";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const id = params.id;
   const person = await fetchPersonById(id);
+  const siblings = await fetchSiblings(id);
 
   if (!person) {
     notFound();
@@ -17,13 +18,14 @@ export default async function Page({ params }: { params: { id: string } }) {
         breadcrumbs={[
           { label: "People", href: "/dashboard/people" },
           {
-            label: "Edit Person",
-            href: `/dashboard/people/${id}/edit`,
+            label: "View Details",
+            href: `/dashboard/people/${id}`,
             active: true,
           },
         ]}
       />
-      <EditPersonForm person={person} />
+
+      <PersonProfile person={person} siblings={siblings} />
     </main>
   );
 }

@@ -1,12 +1,12 @@
 import { sql } from "@vercel/postgres";
 import {
   CustomerField,
-  CustomersTableType,
   InvoiceForm,
   InvoicesTable,
   LatestInvoiceRaw,
   PeopleTableType,
   Person,
+  SiblingType,
 } from "./definitions";
 import { formatCurrency } from "./utils";
 
@@ -177,13 +177,24 @@ export async function fetchInvoiceById(id: string) {
 
 export async function fetchPersonById(id: string) {
   try {
-    const data = await sql<Person>`
+    const data = await sql<PeopleTableType>`
       SELECT
         id,
         name,
         surname,
+        maiden_name,
+        gender,
         birth_date,
-        ancestry
+        marriage_date,
+        death_date,
+        born_in,
+        married_in,
+        died_in,
+        ancestry,
+        comments,
+        father_id,
+        mother_id,
+        spouse_id
       FROM people
       WHERE id = ${id};
     `;
@@ -196,6 +207,37 @@ export async function fetchPersonById(id: string) {
   } catch (error) {
     console.error("Database Error:", error);
     throw new Error("Failed to fetch person.");
+  }
+}
+
+export async function fetchSiblings(id: string) {
+  try {
+    const data = await sql<SiblingType>`
+      WITH sibling_pairs AS (
+        SELECT 
+          p2.id AS sibling_id,
+          p2.name||' '||p2.surname AS sibling_name
+        FROM 
+          people p1
+        JOIN 
+          people p2
+        ON 
+          p1.id != p2.id  -- Ensure they are not the same person
+        AND 
+          (p1.father_id = p2.father_id AND p1.father_id IS NOT NULL
+          OR
+          p1.mother_id = p2.mother_id AND p1.mother_id IS NOT NULL)
+        WHERE 
+          p1.id = ${id}
+      )
+      SELECT DISTINCT sibling_name, sibling_id
+      FROM sibling_pairs
+      ORDER BY sibling_name ASC;
+    `;
+    return data.rows;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch siblings.");
   }
 }
 
@@ -217,56 +259,24 @@ export async function fetchCustomers() {
   }
 }
 
-export async function fetchFilteredCustomers(query: string) {
-  try {
-    const data = await sql<CustomersTableType>`
-		SELECT
-		  customers.id,
-		  customers.name,
-		  customers.email,
-		  customers.image_url,
-		  COUNT(invoices.id) AS total_invoices,
-		  SUM(CASE WHEN invoices.status = 'pending' THEN invoices.amount ELSE 0 END) AS total_pending,
-		  SUM(CASE WHEN invoices.status = 'paid' THEN invoices.amount ELSE 0 END) AS total_paid
-		FROM customers
-		LEFT JOIN invoices ON customers.id = invoices.customer_id
-		WHERE
-		  customers.name ILIKE ${`%${query}%`} OR
-        customers.email ILIKE ${`%${query}%`}
-		GROUP BY customers.id, customers.name, customers.email, customers.image_url
-		ORDER BY customers.name ASC
-	  `;
-
-    const customers = data.rows.map((customer) => ({
-      ...customer,
-      total_pending: formatCurrency(customer.total_pending),
-      total_paid: formatCurrency(customer.total_paid),
-    }));
-
-    return customers;
-  } catch (err) {
-    console.error("Database Error:", err);
-    throw new Error("Failed to fetch customer table.");
-  }
-}
-
 const PEOPLE_PER_PAGE = 10;
 export async function fetchFilteredPeople(query: string, currentPage: number) {
   const offset = (currentPage - 1) * PEOPLE_PER_PAGE;
 
   try {
     const data = await sql<PeopleTableType>`
-		SELECT
-      people.id,
-      people.name,
-      people.surname,
-      people.birth_date
-		FROM people
-		WHERE
-      people.name ILIKE ${`%${query}%`} OR
-      people.surname ILIKE ${`%${query}%`}
-		ORDER BY people.created_at DESC
-    LIMIT ${PEOPLE_PER_PAGE} OFFSET ${offset}
+      SELECT
+        people.id,
+        people.name,
+        people.surname,
+        people.birth_date,
+        people.ancestry
+      FROM people
+      WHERE
+        people.name ILIKE ${`%${query}%`} OR
+        people.surname ILIKE ${`%${query}%`}
+      ORDER BY people.created_at DESC
+      LIMIT ${PEOPLE_PER_PAGE} OFFSET ${offset}
     `;
 
     const people = data.rows.map((person) => ({
