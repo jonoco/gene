@@ -62,26 +62,6 @@ export type InvoicesTable = {
   status: 'pending' | 'paid';
 };
 
-export type PeopleTableType = {
-  id: string;
-  name?: string;
-  surname?: string;
-  gender?: string;
-  maiden_naame?: string;
-  birth_date?: Date;
-  marriage_date?: Date;
-  death_date?: Date;
-  born_in?: string;
-  married_in?: string;
-  died_in?: string;
-  comments?: string;
-  ancestry?: string;
-  father_id?: string;
-  mother_id?: string;
-  spouse_id?: string;
-  father_name?: string;
-};
-
 export type SiblingType = {
   sibling_id: string;
   sibling_name: string;
@@ -111,7 +91,6 @@ export type InvoiceForm = {
 
 export type Person = {
   id: string;
-  record: number;
   father?: number;
   mother?: number;
   sibling?: number;
@@ -121,9 +100,9 @@ export type Person = {
   surname?: string;
   name?: string;
   maiden_naame?: string;
-  birth_date?: string;
-  marriage_date?: string;
-  death_date?: string;
+  birth_date?: Date;
+  marriage_date?: Date;
+  death_date?: Date;
   photo?: number;
   photo_url?: string;
   born_in?: string;

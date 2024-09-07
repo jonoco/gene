@@ -1,6 +1,6 @@
 "use client";
 
-import { PeopleTableType, SiblingType } from "@/app/lib/definitions";
+import { Person, SiblingType } from "@/app/lib/definitions";
 import { ancestryToString, genderToString } from "@/app/lib/people";
 import { formatDateToLocal } from "@/app/lib/utils";
 import { Stack, Text, Title, List, Group, Flex, Button } from "@mantine/core";
@@ -10,7 +10,7 @@ export default function PersonProfile({
   person,
   siblings,
 }: {
-  person: PeopleTableType;
+  person: Person;
   siblings: SiblingType[];
 }) {
   return (
@@ -44,7 +44,7 @@ export default function PersonProfile({
   );
 }
 
-function ProfileList({ person }: { person: PeopleTableType }) {
+function ProfileList({ person }: { person: Person }) {
   return (
     <List spacing="lg" size="md" center>
       {!!person.maiden_naame && (

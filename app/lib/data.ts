@@ -4,7 +4,6 @@ import {
   InvoiceForm,
   InvoicesTable,
   LatestInvoiceRaw,
-  PeopleTableType,
   Person,
   SiblingType,
 } from "./definitions";
@@ -224,7 +223,7 @@ export async function fetchFullPersonById(id: string) {
 
 export async function fetchPersonById(id: string) {
   try {
-    const data = await sql<PeopleTableType>`
+    const data = await sql<Person>`
       SELECT
         id,
         name,
@@ -311,7 +310,7 @@ export async function fetchFilteredPeople(query: string, currentPage: number) {
   const offset = (currentPage - 1) * PEOPLE_PER_PAGE;
 
   try {
-    const data = await sql<PeopleTableType>`
+    const data = await sql<Person>`
       SELECT
         people.id,
         people.name,
