@@ -5,7 +5,6 @@ import { CheckIcon, UserCircleIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { Button } from "@/app/ui/components/button";
 import { updatePerson } from "@/app/lib/actions";
-import { DeletePerson } from "@/app/ui/people/buttons";
 
 export default function EditPersonForm({ person }: { person: Person }) {
   const updatePersonWithId = updatePerson.bind(null, person.id);

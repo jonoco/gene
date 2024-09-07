@@ -1,18 +1,12 @@
 "use client";
 
-import { CustomerField } from "@/app/lib/definitions";
 import Link from "next/link";
-import {
-  CheckIcon,
-  ClockIcon,
-  CurrencyDollarIcon,
-  UserCircleIcon,
-} from "@heroicons/react/24/outline";
+import { CheckIcon, UserCircleIcon } from "@heroicons/react/24/outline";
 import { Button } from "@/app/ui/components/button";
 import { createPerson, State } from "@/app/lib/actions";
 import { useActionState } from "react";
 
-export default function Form({ people }: { people: CustomerField[] }) {
+export default function Form() {
   const initialState: State = { message: null, errors: {} };
   const [state, formAction] = useActionState(createPerson, initialState);
 

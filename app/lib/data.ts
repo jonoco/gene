@@ -192,7 +192,7 @@ export async function fetchFullPersonById(id: string) {
           OR
           p1.mother_id = p2.mother_id AND p1.mother_id IS NOT NULL)
       WHERE 
-          p1.id = '<given_id>'
+          p1.id = ${id}
       )
       SELECT 
           p.name AS person_name,
@@ -208,7 +208,7 @@ export async function fetchFullPersonById(id: string) {
       LEFT JOIN 
           siblings ON TRUE  -- Cartesian join to list all siblings
       WHERE 
-          p.id = '<given_id>';
+          p.id = ${id};
     `;
     
     const person = data.rows.map((person) => ({

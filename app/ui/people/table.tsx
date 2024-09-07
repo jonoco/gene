@@ -1,5 +1,4 @@
-import Image from "next/image";
-import { UpdatePerson, DeletePerson } from "@/app/ui/people/buttons";
+import { UpdatePerson } from "@/app/ui/people/buttons";
 import { formatDateToLocal } from "@/app/lib/utils";
 import { fetchFilteredPeople } from "@/app/lib/data";
 import { auth } from "@/auth";

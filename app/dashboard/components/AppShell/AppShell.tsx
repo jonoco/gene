@@ -1,6 +1,6 @@
 "use client";
 
-import { AppShell, Burger, Group, Skeleton } from "@mantine/core";
+import { AppShell } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 
 export function DashboardShell({
@@ -10,7 +10,7 @@ export function DashboardShell({
   children: React.ReactNode;
   sideNav: React.ReactNode;
 }) {
-  const [opened, { toggle }] = useDisclosure();
+  const [opened] = useDisclosure();
 
   return (
     <AppShell

@@ -1,5 +1,5 @@
 import { deletePerson } from "@/app/lib/actions";
-import { PencilIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
+import { PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { Button } from "@mantine/core";
 import { IconPencil } from "@tabler/icons-react";
 import Link from "next/link";

@@ -2,18 +2,11 @@
 
 import {
   Table,
-  Progress,
-  Anchor,
   Text,
-  Group,
-  NavLink,
   Button,
 } from "@mantine/core";
-import classes from "./PeopleTable.module.css";
-import { PeopleTableType, Person } from "@/app/lib/definitions";
+import { PeopleTableType } from "@/app/lib/definitions";
 import { ancestryToString } from "@/app/lib/people";
-import { fetchFilteredPeople } from "@/app/lib/data";
-import { auth } from "@/auth";
 import { formatDateToLocal } from "@/app/lib/utils";
 import { useSession } from "next-auth/react";
 import { UpdatePerson } from "@/app/ui/people/buttons";

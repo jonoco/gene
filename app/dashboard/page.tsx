@@ -1,5 +1,4 @@
 import { Card } from "@/app/ui/dashboard/cards";
-import RevenueChart from "@/app/ui/dashboard/revenue-chart";
 import LatestPeople from "@/app/ui/dashboard/latest-people";
 import { lusitana } from "@/app/ui/fonts";
 import { countPeople, fetchLatestPeople } from "@/app/lib/data";

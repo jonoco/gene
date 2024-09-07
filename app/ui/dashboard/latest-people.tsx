@@ -1,8 +1,7 @@
 import { ArrowPathIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
-import Image from "next/image";
 import { lusitana } from "@/app/ui/fonts";
-import { LatestInvoice, LatestPerson } from "@/app/lib/definitions";
+import { LatestPerson } from "@/app/lib/definitions";
 import { formatDateToLocal } from "@/app/lib/utils";
 
 export default async function LatestPeople({

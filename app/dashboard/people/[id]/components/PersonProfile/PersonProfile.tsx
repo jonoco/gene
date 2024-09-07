@@ -3,16 +3,7 @@
 import { PeopleTableType, SiblingType } from "@/app/lib/definitions";
 import { ancestryToString, genderToString } from "@/app/lib/people";
 import { formatDateToLocal } from "@/app/lib/utils";
-import {
-  Stack,
-  Text,
-  Title,
-  List,
-  Container,
-  Group,
-  Flex,
-  Button,
-} from "@mantine/core";
+import { Stack, Text, Title, List, Group, Flex, Button } from "@mantine/core";
 import Link from "next/link";
 
 export default function PersonProfile({
@@ -91,24 +82,5 @@ function ListItem({ title, content }: { title: string; content?: string }) {
         <Flex>{hasContent ? content : "Unknown"}</Flex>
       </Group>
     </List.Item>
-  );
-}
-
-function ProfileSection({
-  title,
-  children,
-}: {
-  title: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <Container w="100%">
-      <Stack>
-        <Title order={3} c="gray">
-          {title}
-        </Title>
-        {children}
-      </Stack>
-    </Container>
   );
 }

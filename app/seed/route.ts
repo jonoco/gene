@@ -5,10 +5,6 @@ import { users } from "@/app/lib/placeholder-data";
 
 const client = await db.connect();
 
-function nullableValue(value: number | string | undefined) {
-  return value === undefined ? "NULL" : value;
-}
-
 async function seedUsers() {
   await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
   await client.sql`

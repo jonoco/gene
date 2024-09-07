@@ -1,7 +1,5 @@
 import Pagination from "@/app/ui/components/pagination";
 import Search from "@/app/ui/components/search";
-import Table from "@/app/ui/people/table";
-import { CreatePerson } from "@/app/ui/people/buttons";
 import { lusitana } from "@/app/ui/fonts";
 import { InvoicesTableSkeleton } from "@/app/ui/components/skeletons";
 import { Suspense } from "react";

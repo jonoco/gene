@@ -1,4 +1,4 @@
-import { Button, Divider, Flex, NavLink } from "@mantine/core";
+import { Button, Divider, Flex } from "@mantine/core";
 import { IconLogin, IconLogout } from "@tabler/icons-react";
 import Link from "next/link";
 

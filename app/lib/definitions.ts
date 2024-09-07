@@ -35,7 +35,7 @@ export type LatestPerson = {
   id: string;
   name: string;
   surname: string;
-  birth_date: string;
+  birth_date: Date;
 }
 
 export type LatestInvoice = {
