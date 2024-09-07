@@ -175,6 +175,53 @@ export async function fetchInvoiceById(id: string) {
   }
 }
 
+export async function fetchFullPersonById(id: string) {
+  try {
+    const data = await sql<Person>`
+      WITH siblings AS (
+      SELECT 
+          p2.name AS sibling_name
+      FROM 
+          people p1
+      JOIN 
+          people p2
+      ON 
+          p1.id != p2.id
+      AND 
+          (p1.father_id = p2.father_id AND p1.father_id IS NOT NULL
+          OR
+          p1.mother_id = p2.mother_id AND p1.mother_id IS NOT NULL)
+      WHERE 
+          p1.id = '<given_id>'
+      )
+      SELECT 
+          p.name AS person_name,
+          father.name AS father_name,
+          mother.name AS mother_name,
+          siblings.sibling_name
+      FROM 
+          people p
+      LEFT JOIN 
+          people father ON p.father_id = father.id
+      LEFT JOIN 
+          people mother ON p.mother_id = mother.id
+      LEFT JOIN 
+          siblings ON TRUE  -- Cartesian join to list all siblings
+      WHERE 
+          p.id = '<given_id>';
+    `;
+    
+    const person = data.rows.map((person) => ({
+      ...person,
+    }));
+    
+    return person[0];
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch person.");
+  }
+}
+
 export async function fetchPersonById(id: string) {
   try {
     const data = await sql<PeopleTableType>`

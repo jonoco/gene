@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import { db } from "@vercel/postgres";
-import { users } from "../../_notes/placeholder-data";
+import { users } from "@/app/lib/placeholder-data";
 // import { people } from "./people_data";
 
 const client = await db.connect();
@@ -167,7 +167,7 @@ async function seedUsers() {
 // }
 
 export async function GET() {
-  // return Response.json({ message: "Seeding disabled" });
+  return Response.json({ message: "Seeding disabled" });
 
   // const starting_batch = 0;
 
