@@ -50,7 +50,7 @@ export default function PeopleTable({ people }: { people: PeopleTableType[] }) {
   });
 
   return (
-    <Table verticalSpacing="md">
+    <Table verticalSpacing="xs">
       <Table.Thead>
         <Table.Tr>
           <Table.Th>Name</Table.Th>

@@ -1,5 +1,7 @@
 import { deletePerson } from "@/app/lib/actions";
 import { PencilIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
+import { Button } from "@mantine/core";
+import { IconPencil } from "@tabler/icons-react";
 import Link from "next/link";
 
 export function CreatePerson() {
@@ -16,12 +18,14 @@ export function CreatePerson() {
 
 export function UpdatePerson({ id }: { id: string }) {
   return (
-    <Link
+    <Button
+      component={Link}
       href={`/dashboard/people/${id}/edit`}
-      className="rounded-md border p-2 hover:bg-gray-100"
+      variant="subtle"
+      leftSection={<IconPencil className="w-5" />}
     >
-      <PencilIcon className="w-5" />
-    </Link>
+      Edit
+    </Button>
   );
 }
 
