@@ -1,18 +1,14 @@
 "use client";
 
-import {
-  Table,
-  Text,
-  Button,
-} from "@mantine/core";
-import { Person } from "@/app/lib/definitions";
+import { Table, Text, Button } from "@mantine/core";
+import { PeopleTable } from "@/app/lib/definitions";
 import { ancestryToString } from "@/app/lib/people";
 import { formatDateToLocal } from "@/app/lib/utils";
 import { useSession } from "next-auth/react";
 import { UpdatePerson } from "@/app/ui/people/buttons";
 import Link from "next/link";
 
-export default function PeopleTable({ people }: { people: Person[] }) {
+export default function PeopleTable({ people }: { people: PeopleTable[] }) {
   const session = useSession();
 
   const rows = people.map((person) => {
@@ -24,7 +20,9 @@ export default function PeopleTable({ people }: { people: Person[] }) {
             href={`/dashboard/people/${person.id}`}
             variant="subtle"
           >
-            <Text>{person.name} {person.surname}</Text>
+            <Text>
+              {person.name} {person.surname}
+            </Text>
           </Button>
         </Table.Td>
 

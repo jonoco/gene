@@ -23,7 +23,7 @@ export type Invoice = {
   date: string;
   // In TypeScript, this is called a string union type.
   // It means that the "status" property can only be one of the two strings: 'pending' or 'paid'.
-  status: 'pending' | 'paid';
+  status: "pending" | "paid";
 };
 
 export type Revenue = {
@@ -36,7 +36,7 @@ export type LatestPerson = {
   name: string;
   surname: string;
   birth_date: Date;
-}
+};
 
 export type LatestInvoice = {
   id: string;
@@ -47,7 +47,7 @@ export type LatestInvoice = {
 };
 
 // The database returns a number for amount, but we later format it to a string with the formatCurrency function
-export type LatestInvoiceRaw = Omit<LatestInvoice, 'amount'> & {
+export type LatestInvoiceRaw = Omit<LatestInvoice, "amount"> & {
   amount: number;
 };
 
@@ -59,12 +59,13 @@ export type InvoicesTable = {
   image_url: string;
   date: string;
   amount: number;
-  status: 'pending' | 'paid';
+  status: "pending" | "paid";
 };
 
 export type SiblingType = {
   sibling_id: string;
   sibling_name: string;
+  sibling_birth_date: Date;
 };
 
 export type FormattedCustomersTable = {
@@ -86,10 +87,30 @@ export type InvoiceForm = {
   id: string;
   customer_id: string;
   amount: number;
-  status: 'pending' | 'paid';
+  status: "pending" | "paid";
 };
 
-export type Person = {
+export type FullPerson = {
+  id: string;
+  full_name: string;
+  maiden_name?: string;
+  gender?: string;
+  birth_date?: Date;
+  marriage_date?: Date;
+  death_date?: Date;
+  born_in?: string;
+  married_in?: string;
+  died_in?: string;
+  ancestry?: string;
+  father_name?: string;
+  mother_name?: string;
+  spouse_name?: string;
+  father_id?: string;
+  mother_id?: string;
+  spouse_id?: string;
+}
+
+export type PeopleTable = {
   id: string;
   father?: number;
   mother?: number;

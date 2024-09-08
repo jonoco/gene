@@ -1,6 +1,6 @@
 "use client";
 
-import { Person, SiblingType } from "@/app/lib/definitions";
+import { FullPerson, PeopleTable, SiblingType } from "@/app/lib/definitions";
 import { ancestryToString, genderToString } from "@/app/lib/people";
 import { formatDateToLocal } from "@/app/lib/utils";
 import { Stack, Text, Title, List, Group, Flex, Button } from "@mantine/core";
@@ -10,16 +10,56 @@ export default function PersonProfile({
   person,
   siblings,
 }: {
-  person: Person;
+  person: FullPerson;
   siblings: SiblingType[];
 }) {
   return (
     <Stack>
-      <Title order={1}>
-        {person.name} {person.surname}
-      </Title>
+      <Title order={1}>{person.full_name}</Title>
 
       <ProfileList person={person} />
+
+      <Group>
+        <Flex w="10rem">Father:</Flex>
+        {!person.father_id && <Text>Father unknown</Text>}
+        {!!person.father_id && (
+          <Button
+            variant="subtle"
+            component={Link}
+            href={`/dashboard/people/${person.father_id}`}
+          >
+            {person.father_name}
+          </Button>
+        )}
+      </Group>
+
+      <Group>
+        <Flex w="10rem">Mother:</Flex>
+        {!person.mother_id && <Text>Mother unknown</Text>}
+        {!!person.mother_id && (
+          <Button
+            variant="subtle"
+            component={Link}
+            href={`/dashboard/people/${person.mother_id}`}
+          >
+            {person.mother_name}
+          </Button>
+        )}
+      </Group>
+
+      <Group>
+        <Flex w="10rem">Spouse:</Flex>
+        {!person.spouse_id && <Text>Spouse unknown</Text>}
+        {!!person.spouse_id && (
+          <Button
+            variant="subtle"
+            component={Link}
+            href={`/dashboard/people/${person.spouse_id}`}
+          >
+            {person.spouse_name}
+          </Button>
+        )}
+      </Group>
 
       <Group>
         <Flex w="10rem">Siblings:</Flex>
@@ -44,7 +84,7 @@ export default function PersonProfile({
   );
 }
 
-function ProfileList({ person }: { person: Person }) {
+function ProfileList({ person }: { person: PeopleTable }) {
   return (
     <List spacing="lg" size="md" center>
       {!!person.maiden_naame && (

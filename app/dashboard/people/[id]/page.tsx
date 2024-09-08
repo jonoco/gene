@@ -1,11 +1,11 @@
 import PersonProfile from "@/app/dashboard/people/[id]/components/PersonProfile/PersonProfile";
-import { fetchPersonById, fetchSiblings } from "@/app/lib/data";
+import { fetchFullPersonById, fetchSiblings } from "@/app/lib/data";
 import Breadcrumbs from "@/app/ui/components/breadcrumbs";
 import { notFound } from "next/navigation";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const id = params.id;
-  const person = await fetchPersonById(id);
+  const person = await fetchFullPersonById(id);
   const siblings = await fetchSiblings(id);
 
   if (!person) {
