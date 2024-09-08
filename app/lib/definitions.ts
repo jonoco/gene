@@ -108,9 +108,9 @@ export type FullPerson = {
   father_id?: string;
   mother_id?: string;
   spouse_id?: string;
-}
+};
 
-export type PeopleTable = {
+export type PeopleTableType = {
   id: string;
   father?: number;
   mother?: number;

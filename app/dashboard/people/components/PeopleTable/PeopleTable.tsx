@@ -1,14 +1,14 @@
 "use client";
 
 import { Table, Text, Button } from "@mantine/core";
-import { PeopleTable } from "@/app/lib/definitions";
+import { PeopleTableType } from "@/app/lib/definitions";
 import { ancestryToString } from "@/app/lib/people";
 import { formatDateToLocal } from "@/app/lib/utils";
 import { useSession } from "next-auth/react";
 import { UpdatePerson } from "@/app/ui/people/buttons";
 import Link from "next/link";
 
-export default function PeopleTable({ people }: { people: PeopleTable[] }) {
+export default function PeopleTable({ people }: { people: PeopleTableType[] }) {
   const session = useSession();
 
   const rows = people.map((person) => {

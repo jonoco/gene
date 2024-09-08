@@ -1,5 +1,5 @@
 import { sql } from "@vercel/postgres";
-import { FullPerson, PeopleTable, SiblingType } from "./definitions";
+import { FullPerson, PeopleTableType, SiblingType } from "./definitions";
 
 export async function countPeople() {
   try {
@@ -75,7 +75,7 @@ export async function fetchFullPersonById(id: string) {
 
 export async function fetchPersonById(id: string) {
   try {
-    const data = await sql<PeopleTable>`
+    const data = await sql<PeopleTableType>`
       SELECT
         id,
         name,
@@ -145,7 +145,7 @@ export async function fetchFilteredPeople(query: string, currentPage: number) {
   const offset = (currentPage - 1) * PEOPLE_PER_PAGE;
 
   try {
-    const data = await sql<PeopleTable>`
+    const data = await sql<PeopleTableType>`
       SELECT
         people.id,
         people.name,

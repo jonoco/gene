@@ -1,12 +1,16 @@
 "use client";
 
-import { PeopleTable } from "@/app/lib/definitions";
+import { PeopleTableType } from "@/app/lib/definitions";
 import { CheckIcon, UserCircleIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { Button } from "@/app/ui/components/button";
 import { updatePerson } from "@/app/lib/actions";
 
-export default function EditPersonForm({ person }: { person: PeopleTable }) {
+export default function EditPersonForm({
+  person,
+}: {
+  person: PeopleTableType;
+}) {
   const updatePersonWithId = updatePerson.bind(null, person.id);
 
   return (
