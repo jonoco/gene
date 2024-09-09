@@ -1,5 +1,5 @@
 import { sql } from "@vercel/postgres";
-import { FullPerson, PeopleTableType, SiblingType } from "./definitions";
+import { FullPerson, LatestPerson, PeopleTableType, SiblingType } from "./definitions";
 
 export async function countPeople() {
   try {
@@ -14,13 +14,22 @@ export async function countPeople() {
 
 export async function fetchLatestPeople() {
   try {
-    const data =
-      await sql`SELECT * FROM people ORDER BY created_at DESC LIMIT 5`;
+    const data = await sql<LatestPerson>`
+      SELECT
+        id,
+        name||' '||surname AS full_name,
+        birth_date,
+        ancestry
+      FROM 
+        people 
+      ORDER BY 
+        created_at DESC LIMIT 5
+      `;
 
     return data.rows.map((person) => ({
       id: person.id,
-      name: person.name,
-      surname: person.surname,
+      full_name: person.full_name,
+      ancestry: person.ancestry,
       birth_date: person.birth_date,
     }));
   } catch (error) {

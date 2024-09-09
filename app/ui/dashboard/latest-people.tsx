@@ -1,15 +1,14 @@
 import { ArrowPathIcon } from "@heroicons/react/24/outline";
-import clsx from "clsx";
 import { lusitana } from "@/app/ui/fonts";
 import { LatestPerson } from "@/app/lib/definitions";
-import { formatDateToLocal } from "@/app/lib/utils";
+import { Button, Stack, Text } from "@mantine/core";
+import Link from "next/link";
 
 export default async function LatestPeople({
   latestPeople,
 }: {
   latestPeople: LatestPerson[];
 }) {
-  
   return (
     <div className="flex w-full flex-col md:col-span-4">
       <h2 className={`${lusitana.className} mb-4 text-xl md:text-2xl`}>
@@ -17,42 +16,22 @@ export default async function LatestPeople({
       </h2>
       <div className="flex grow flex-col justify-between rounded-xl bg-gray-50 p-4">
         <div className="bg-white px-6">
-          {latestPeople.map((person, i) => {
-            return (
-              <div
-                key={person.id}
-                className={clsx(
-                  'flex flex-row items-center justify-between py-4',
-                  {
-                    'border-t': i !== 0,
-                  },
-                )}
-              >
-                <div className="flex items-center">
-                  {/* <Image
-                    src={invoice.image_url}
-                    alt={`${invoice.name}'s profile picture`}
-                    className="mr-4 rounded-full"
-                    width={32}
-                    height={32}
-                  /> */}
-                  <div className="min-w-0">
-                    <p className="truncate text-sm font-semibold md:text-base">
-                      {person.name} {person.surname}
-                    </p>
-                    <p className="hidden text-sm text-gray-500 sm:block">
-                      <span className="text-gray-400">Born:</span> {formatDateToLocal(person.birth_date)}
-                    </p>
-                  </div>
-                </div>
-                <p
-                  className={`${lusitana.className} truncate text-sm font-medium md:text-base`}
+          <Stack justify="left">
+            {latestPeople.map((person, i) => {
+              return (
+                <Button
+                  component={Link}
+                  href={`/dashboard/people/${person.id}`}
+                  variant="subtle"
+                  justify="left"
+                  key={i}
+                  fullWidth
                 >
-                  {/* {invoice.amount} */}
-                </p>
-              </div>
-            );
-          })}
+                  <Text>{person.full_name}</Text>
+                </Button>
+              );
+            })}
+          </Stack>
         </div>
         <div className="flex items-center pb-2 pt-6">
           <ArrowPathIcon className="h-5 w-5 text-gray-500" />

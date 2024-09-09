@@ -31,13 +31,6 @@ export type Revenue = {
   revenue: number;
 };
 
-export type LatestPerson = {
-  id: string;
-  name: string;
-  surname: string;
-  birth_date: Date;
-};
-
 export type LatestInvoice = {
   id: string;
   name: string;
@@ -88,6 +81,13 @@ export type InvoiceForm = {
   customer_id: string;
   amount: number;
   status: "pending" | "paid";
+};
+
+export type LatestPerson = {
+  id: string;
+  full_name: string;
+  birth_date: Date;
+  ancestry: string;
 };
 
 export type FullPerson = {
