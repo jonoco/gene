@@ -1,5 +1,5 @@
 import { sql } from "@vercel/postgres";
-import { FullPerson, LatestPerson, PeopleTableType, SiblingType } from "./definitions";
+import { ChildrenType, FullPerson, LatestPerson, PeopleTableType, SiblingType } from "./definitions";
 
 export async function countPeople() {
   try {
@@ -114,6 +114,27 @@ export async function fetchPersonById(id: string) {
   } catch (error) {
     console.error("Database Error:", error);
     throw new Error("Failed to fetch person.");
+  }
+}
+
+export async function fetchChildren(id: string) {
+  try {
+    const data = await sql<ChildrenType>`
+      SELECT
+        p.id AS child_id,
+        p.name||' '||p.surname AS child_name,
+        p.birth_date AS child_birth_date
+      FROM
+        people p
+      WHERE
+        p.father_id = ${id} OR p.mother_id = ${id}
+      ORDER BY p.birth_date DESC;
+    `;
+
+    return data.rows;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch children.");
   }
 }
 

@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  ChildrenType,
   FullPerson,
   PeopleTableType,
   SiblingType,
@@ -13,9 +14,11 @@ import Link from "next/link";
 export default function PersonProfile({
   person,
   siblings,
+  kinder,
 }: {
   person: FullPerson;
   siblings: SiblingType[];
+  kinder: ChildrenType[];
 }) {
   return (
     <Stack>
@@ -32,7 +35,7 @@ export default function PersonProfile({
             component={Link}
             href={`/dashboard/people/${person.father_id}`}
           >
-            {person.father_name}
+            {person.father_name ?? "Unknown father name"}
           </Button>
         )}
       </Group>
@@ -46,7 +49,7 @@ export default function PersonProfile({
             component={Link}
             href={`/dashboard/people/${person.mother_id}`}
           >
-            {person.mother_name}
+            {person.mother_name ?? "Unknown mother name"}
           </Button>
         )}
       </Group>
@@ -60,11 +63,31 @@ export default function PersonProfile({
             component={Link}
             href={`/dashboard/people/${person.spouse_id}`}
           >
-            {person.spouse_name}
+            {person.spouse_name ?? "Unknown spouse name"}
           </Button>
         )}
       </Group>
 
+      <Group>
+        <Flex w="10rem">Children:</Flex>
+        {kinder.length == 0 && <Text>No children</Text>}
+        {kinder.length > 0 && (
+          <List>
+            {kinder.map((child) => (
+              <List.Item key={child.child_id}>
+                <Button
+                  variant="subtle"
+                  component={Link}
+                  href={`/dashboard/people/${child.child_id}`}
+                >
+                  {child.child_name ?? "Unknown child name"}
+                </Button>
+              </List.Item>
+            ))}
+          </List>
+        )}
+      </Group>
+      
       <Group>
         <Flex w="10rem">Siblings:</Flex>
         {siblings.length == 0 && <Text>No siblings</Text>}
@@ -77,7 +100,7 @@ export default function PersonProfile({
                   component={Link}
                   href={`/dashboard/people/${sibling.sibling_id}`}
                 >
-                  {sibling.sibling_name}
+                  {sibling.sibling_name ?? "Unknown sibling name"}
                 </Button>
               </List.Item>
             ))}
